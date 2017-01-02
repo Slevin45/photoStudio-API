@@ -29,7 +29,8 @@ public class EmailService {
         Content content = new Content("text/plain", "Hello, Email!");
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sg = new SendGrid(System.getenv("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"));
+        final String getenv = System.getenv("SENDGRID_API_KEY");
+        SendGrid sg = new SendGrid(getenv);
         Request request = new Request();
         try {
             request.method = Method.POST;
