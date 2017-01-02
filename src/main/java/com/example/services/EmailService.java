@@ -14,36 +14,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-
-import javax.mail.internet.InternetAddress;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import java.util.Properties;
+import com.sendgrid.*;
+import java.io.IOException;
 
 @Transactional
 @Service
 @Slf4j
 public class EmailService {
 
-    public void sendEmail(String senderEmail, String senderName, String recipientEmail, String receipentName,
-                          String subject, String content) {
-            try {
-                HtmlEmail email = new HtmlEmail();
-                InternetAddress address = new InternetAddress(recipientEmail, receipentName);
-                email.setTo(Arrays.asList(address));
-                email.setFrom(senderEmail, senderName);
-                email.setSubject(subject);
-                email.setCharset(EmailConstants.UTF_8);
-                email.setHtmlMsg(content);
-                email.setHostName("127.0.0.1");
-                email.setSmtpPort(25);
-                email.send();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void sendEmail() {
+        Email from = new Email("eldar.s@smartum.com");
+        String subject = "Hello World from the SendGrid Java Library!";
+        Email to = new Email("snoopka1995@gmail.com");
+        Content content = new Content("text/plain", "Hello, Email!");
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(System.getenv("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"));
+        Request request = new Request();
+        try {
+            request.method = Method.POST;
+            request.endpoint = "mail/send";
+            request.body = mail.build();
+            Response response = sg.api(request);
+            System.out.println(response.statusCode);
+            System.out.println(response.body);
+            System.out.println(response.headers);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+    }
 
     }
+

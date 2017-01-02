@@ -26,6 +26,6 @@ public class UserService {
         contactRequestRecord.setName(bean.getName());
         contactRequestRecord.setPhone(bean.getPhone());
         contactRequestRepository.store(contactRequestRecord);
-        emailService.sendEmail("eldar.s@smartum.pro", "Eldar", "snoopka1995@gmail.com", null, "Contact request", "Hello!");
+        emailService.sendEmail();
     }
 }
