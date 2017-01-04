@@ -12,6 +12,7 @@ public class ContactUsRequest {
 
     private String name;
     private String phone;
+    @NotBlank
     private String message;
     @NotBlank
     private String email;
